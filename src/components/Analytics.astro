@@ -1,0 +1,13 @@
+<astro-analytics></astro-analytics>
+<script>
+  class Analytics extends HTMLElement {
+    constructor() {
+      super();
+      (() => {
+        navigator.sendBeacon('/api/page-view',
+        JSON.stringify({ path: window.location.pathname, referrer: document.referrer }));
+      })();
+    }
+  }
+  customElements.define('astro-analytics', Analytics);
+</script>

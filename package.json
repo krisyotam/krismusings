@@ -1,0 +1,52 @@
+{
+  "name": "krisyotam",
+  "version": "1.0.0",
+  "description": "Kris Yotam's Site",
+  "author": "Kris Yotam",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier --write --plugin-search-dir=. ."
+  },
+  "devDependencies": {
+    "@types/marked": "^4.0.8",
+    "prettier": "^3.0.0",
+    "prettier-plugin-astro": "^0.13.0",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.0.24",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.4.1",
+    "@astrojs/markdown-remark": "^4.1.0",
+    "@astrojs/mdx": "^2.0.5",
+    "@astrojs/react": "^3.0.9",
+    "@astrojs/rss": "^4.0.2",
+    "@astrojs/sitemap": "^3.0.5",
+    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/vercel": "^7.3.5",
+    "@fontsource/inter": "^5.0.16",
+    "@neondatabase/serverless": "^0.7.2",
+    "@tailwindcss/typography": "^0.5.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vercel/edge": "^1.1.1",
+    "astro": "^4.2.1",
+    "astro-embed": "^0.6.1",
+    "markdown-it": "^13.0.1",
+    "marked": "^4.2.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.11.0",
+    "sanitize-html": "^2.8.1",
+    "satori": "^0.10.11",
+    "satori-html": "^0.3.2",
+    "sharp": "^0.33.2",
+    "shiki": "^0.12.1",
+    "slugify": "^1.6.5"
+  }
+}

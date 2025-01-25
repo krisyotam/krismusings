@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../../layouts/base.astro';
+import Markdown from '../../../components/Markdown.astro';
+import { getGitHubTilRepo } from '../../../_data/github_til_repo';
+
+export const prerender = true;
+
+type Props = Awaited<ReturnType<typeof getStaticPaths>>[number]['props'];
+
+export async function getStaticPaths() {
+  const til = await getGitHubTilRepo();
+
+  return til.map((post) => ({
+    params: { slug: post.path },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.title}
+  subTitle="Today I Learned">
+  <article class="prose prose-gray mb-16 text-gray-800">
+    <Markdown content={post.content} />
+  </article>
+</BaseLayout>

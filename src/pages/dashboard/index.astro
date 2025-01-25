@@ -1,0 +1,265 @@
+---
+import { ChartTotalVisits } from '../../components/ChartTotalVisits';
+import BaseLayout from '../../layouts/base.astro';
+import { neon } from '@neondatabase/serverless';
+
+export const prerender = false;
+
+Astro.response.headers.set(
+  'CDN-Cache-Control',
+  'public, max-age=3600, must-revalidate'
+);
+
+const sql = neon(import.meta.env.DATABASE_URL);
+
+interface AnalyticsData {
+  id: number;
+  date: string;
+  path: string;
+  referrer: string;
+  country: string;
+  city: string | null;
+  flag: string;
+}
+
+interface GroupedData {
+  [key: string]: { date: string; total: number };
+}
+
+interface GroupedReferrers {
+  [key: string]: { referrer: string; total: number };
+}
+
+interface GroupedPaths {
+  [key: string]: { path: string; total: number };
+}
+
+interface GroupedCities {
+  [key: string]: {
+    city: string | null;
+    country: string;
+    flag: string;
+    total: number;
+  };
+}
+
+type ValueOf<T> = T[keyof T];
+
+let table: AnalyticsData[] = [];
+
+try {
+  const response = await sql`
+    SELECT * FROM analytics
+    WHERE date >= NOW() - INTERVAL '30 days'`;
+
+  if (!response.length) {
+    throw new Error('Bad request');
+  }
+
+  table = response as AnalyticsData[];
+
+  table = table.filter(
+    (item) => item.city !== 'Mock City' && !item.referrer.includes('localhost')
+  );
+} catch (error) {
+  console.error(error);
+}
+
+const groupByDate = (array: AnalyticsData[]) => {
+  const groupedData: GroupedData = array.reduce((acc, item) => {
+    const date = new Date(item.date);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(
+      date
+    );
+    const key = `${day}-${month}`;
+
+    if (!acc[key]) {
+      acc[key] = {
+        date: key,
+        total: 0
+      };
+    }
+
+    (acc[key] as ValueOf<GroupedData>).total++;
+
+    return acc;
+  }, {} as GroupedData);
+
+  const currentDate = new Date();
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  const result = [];
+
+  while (thirtyDaysAgo <= currentDate) {
+    const day = thirtyDaysAgo.getDate().toString().padStart(2, '0');
+    const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(
+      thirtyDaysAgo
+    );
+    const key = `${day}-${month}`;
+
+    if (groupedData[key]) {
+      result.push(groupedData[key] as { date: string; total: number });
+    } else {
+      result.push({
+        date: `${month}-${day}`,
+        total: 0
+      });
+    }
+
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() + 1);
+  }
+
+  return result;
+};
+
+const groupByReferrer = (array: AnalyticsData[]) => {
+  const groupedData: GroupedReferrers = array.reduce((acc, item) => {
+    const { referrer } = item;
+    const url =
+      referrer !== null && referrer.includes('krisyotam.com')
+        ? 'https://krisyotam.com'
+        : referrer;
+    const key = url;
+
+    if (!acc[key]) {
+      acc[key] = {
+        referrer: url,
+        total: 0
+      };
+    }
+
+    (acc[key] as ValueOf<GroupedReferrers>).total++;
+
+    return acc;
+  }, {} as GroupedReferrers);
+
+  return Object.keys(groupedData)
+    .map((key) => groupedData[key])
+    .filter((item) => item?.referrer !== null);
+};
+
+const groupByPath = (array: AnalyticsData[]) => {
+  const groupedData: GroupedPaths = array.reduce((acc, item) => {
+    const { path } = item;
+    const key = path;
+
+    if (!acc[key]) {
+      acc[key] = {
+        path: path,
+        total: 0
+      };
+    }
+
+    (acc[key] as ValueOf<GroupedPaths>).total++;
+
+    return acc;
+  }, {} as GroupedPaths);
+
+  return Object.keys(groupedData).map((key) => groupedData[key]);
+};
+
+const groupByCity = (array: AnalyticsData[]) => {
+  const groupedData: GroupedCities = array.reduce((acc, item) => {
+    const { city, country, flag } = item;
+    const key = `${country}-${city}`;
+
+    if (!acc[key]) {
+      acc[key] = {
+        city: city,
+        country: country,
+        flag: flag,
+        total: 0
+      };
+    }
+
+    (acc[key] as ValueOf<GroupedCities>).total++;
+
+    return acc;
+  }, {} as GroupedCities);
+
+  return Object.keys(groupedData).map((key) => groupedData[key]);
+};
+---
+
+<BaseLayout>
+  <h1 class="mb-1 text-2xl font-bold">Analytics</h1>
+  {
+    table ? (
+      <div class="m-auto my-8 mb-12 max-w-2xl text-sm">
+        <h2 class="my-8 text-xl font-bold">Total Visits</h2>
+        <ChartTotalVisits client:load data={groupByDate(table)} />
+
+        <h2 class="my-8 text-xl font-bold">Top Referrers</h2>
+        <div class="py-2 font-medium text-gray-500">
+          <span class="grid grid-cols-8">
+            <span class="col-span-7">Referrers</span>
+            <span class="col-span-1">Count</span>
+          </span>
+        </div>
+        <ul>
+          {groupByReferrer(table)
+            .filter((item) => item?.referrer !== '')
+            .sort((a, b) => (b?.total || 0) - (a?.total || 0))
+            .slice(0, 10)
+            .map((item) => (
+              <li class="transition-[background-color] hover:bg-gray-100 active:bg-gray-200">
+                <span class="grid grid-cols-8 gap-2 border-t border-gray-200 py-2">
+                  <time class="col-span-7">{item?.referrer}</time>
+                  <span class="col-span-1 text-gray-500">{item?.total}</span>
+                </span>
+              </li>
+            ))}
+        </ul>
+
+        <h2 class="my-8 text-xl font-bold">Top Posts</h2>
+        <div class="py-2 font-medium text-gray-500">
+          <span class="grid grid-cols-8">
+            <span class="col-span-7">Post</span>
+            <span class="col-span-1">Count</span>
+          </span>
+        </div>
+        <ul>
+          {groupByPath(table)
+            .sort((a, b) => (b?.total || 0) - (a?.total || 0))
+            .slice(0, 10)
+            .map((item) => (
+              <li class="transition-[background-color] hover:bg-gray-100 active:bg-gray-200">
+                <a href={item?.path}>
+                  <span class="grid grid-cols-8 gap-2 border-t border-gray-200 py-2">
+                    <time class="col-span-7">{item?.path}</time>
+                    <span class="col-span-1 text-gray-500">{item?.total}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+        </ul>
+
+        <h2 class="my-8 text-xl font-bold">Top Cities</h2>
+        <div class="py-2 font-medium text-gray-500">
+          <span class="grid grid-cols-8">
+            <span class="col-span-7">City</span>
+            <span class="col-span-1">Count</span>
+          </span>
+        </div>
+        <ul>
+          {groupByCity(table)
+            .filter((item) => item?.city !== null)
+            .sort((a, b) => (b?.total || 0) - (a?.total || 0))
+            .slice(0, 10)
+            .map((item) => (
+              <li class="transition-[background-color] hover:bg-gray-100 active:bg-gray-200">
+                <span class="grid grid-cols-8 gap-2 border-t border-gray-200 py-2">
+                  <time class="col-span-7">
+                    {item?.flag} {item?.city}
+                  </time>
+                  <span class="col-span-1 text-gray-500">{item?.total}</span>
+                </span>
+              </li>
+            ))}
+        </ul>
+      </div>
+    ) : null
+  }
+</BaseLayout>

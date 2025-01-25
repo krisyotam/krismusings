@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/base.astro';
+import { getGitHubTilRepo } from '../../_data/github_til_repo';
+
+const til = await getGitHubTilRepo();
+
+export const prerender = true;
+---
+
+<BaseLayout>
+  <h1 class="mb-1 text-2xl font-bold">Today I Learned</h1>
+  <div class="mb-16">
+    <p class="my-6">
+      This is a collection of short notes compiled from my daily updates
+      on a variety of subjects, a polymathic symposium if you will. I share these notes as I <a
+        class="border-b border-gray-300 text-gray-600 transition-[border-color] hover:border-gray-600"
+        href="https://www.learninpublic.org/"
+        target="noopener">learn in public</a
+      >.
+    </p>
+    <p>
+      <i> <strong>{til.length}</strong> TILs and counting...</i>
+      <a
+        class="border-b border-gray-300 text-gray-600 transition-[border-color] hover:border-gray-600"
+        href="/today-i-learned/random/">Feeling lucky?</a
+      >
+    </p>
+    <p class="my-6">
+      You can follow along by watching my <a
+        class="border-b border-gray-300 text-gray-600 transition-[border-color] hover:border-gray-600"
+        href="https://github.com/krisyotam/til">GitHub repository</a
+      >.
+      <ul class="my-8 list-none space-y-2 text-sm tabular-nums">
+        {
+          til.map((item) => (
+            <li>
+              <div class="flex">
+                <div class="shrink-0 basis-28 text-gray-500">{item.date}</div>
+                <a href={`/til/${item.path}/`}>{item.title}</a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </p>
+  </div>
+</BaseLayout>

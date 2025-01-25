@@ -1,0 +1,52 @@
+[
+  {
+    "name": "cvAI.app",
+    "description": "AI-powered resume and cover letter builder. This site uses OpenAI’s new GPT-4 with Vision model. Built using SvelteKit and hosted on Vercel.",
+    "links": [
+      {
+        "url": "https://www.cvai.app/",
+        "text": "cvai.app"
+      },
+      {
+        "url": "https://github.com/krisyotam/cvai.app",
+        "text": "Source code"
+      }
+    ]
+  },
+  {
+    "name": "Formula 1 Page Speed Insights",
+    "description": "Performance report using PageSpeed Insights and Chrome User Experience Report to showcase which Formula 1 team has the fastest web performance. Built using Next.js and hosted on Netlify.",
+    "links": [
+      {
+        "url": "https://f1-page-speed-insights.netlify.app",
+        "text": "f1-page-speed-insights.netlify.app"
+      },
+      {
+        "url": "/page-speed-performance-of-formula-1-websites/",
+        "text": "Read my article on how this project was built"
+      },
+      {
+        "url": "https://github.com/krisyotam/page-speed-insights",
+        "text": "Source code"
+      }
+    ]
+  },
+  {
+    "name": "Singapore E-Commerce Page Speed Insights",
+    "description": "Performance report using PageSpeed Insights and Chrome User Experience Report to showcase which Singapore E-Commerce store has the fastest web performance. Built using Next.js and hosted on Netlify.",
+    "links": [
+      {
+        "url": "https://sg-page-speed-insights.netlify.app",
+        "text": "sg-page-speed-insights.netlify.app"
+      },
+      {
+        "url": "/page-speed-comparison-of-singapore-commerce/",
+        "text": "Read my article on how this project was built"
+      },
+      {
+        "url": "https://github.com/krisyotam/page-speed-insights",
+        "text": "Source code"
+      }
+    ]
+  }
+]

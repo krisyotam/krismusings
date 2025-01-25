@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/base.astro';
+import profileImage from '/public/assets/profile.png';
+
+export const prerender = true;
+---
+
+<BaseLayout>
+  <h1 class="mb-1 text-2xl font-bold">About</h1>
+  <Image
+    class="mx-auto mt-2 mb-4 block rounded-lg bg-gray-100 sm:float-right sm:ml-4 sm:mb-4"
+    src={profileImage}
+    alt="Kris Yotam"
+    height={160}
+    width={160}
+    loading="eager"
+  />
+  <p class="my-6">
+    My name is Peter and I am passionate about frontend development. I am
+    currently based in Singapore, where I work as a software engineer at Credit
+    Suisse.
+  </p>
+  <p class="my-6">
+    I was born in Egypt and raised in Australia. This diverse upbringing
+    background sparked my love for computers, cars, and the outdoors. When I'm
+    not working on the web, you can find me running and exploring new outdoor
+    locations.
+  </p>
+  <h2 class="my-8 text-xl font-bold">Companies I've worked with</h2>
+  <div class="space-y-4">
+    <div class="flex items-center space-x-6">
+      <img
+        src="/assets/companies/credit-suisse.jpeg"
+        alt="Credit Suisse logo"
+      />
+      <div>
+        <span class="font-semibold tracking-tight">
+          <a href="https://www.credit-suisse.com" title="Credit Suisse"
+            >Credit Suisse</a
+          >
+        </span>
+        <p class="text-sm">Singapore</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-6">
+      <img src="/assets/companies/singtel.jpeg" alt="Singtel logo" />
+      <div>
+        <span class="font-semibold tracking-tight">
+          <a href="https://shop.singtel.com" title="Singtel">Singtel</a>
+        </span>
+        <p class="text-sm">Singapore</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-6">
+      <img src="/assets/companies/optus.jpeg" alt="Optus logo" />
+      <div>
+        <span class="font-semibold tracking-tight">
+          <a href="https://www.optus.com.au/" title="Optus">Optus</a>
+        </span>
+        <p class="text-sm">Australia</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-6">
+      <img src="/assets/companies/news-corp.jpeg" alt="News Corp logo" />
+      <div>
+        <span class="font-semibold tracking-tight">
+          <a href="https://news.com.au/" title="News Corp">News Corp</a>
+        </span>
+        <p class="text-sm">Australia</p>
+      </div>
+    </div>
+  </div>
+  <p>
+    I share my professional achievements on <a
+      target="_blank"
+      class="border-b border-gray-300 text-gray-600 transition-[border-color] hover:border-gray-600"
+      href="https://www.linkedin.com/in/krisyotam/">LinkedIn</a
+    >.
+  </p>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import { slug } from '../slug';
+import BaseLayout from '../layouts/base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+export const prerender = true;
+
+const allBlogPosts = await getCollection('blog');
+
+const sortedPosts = allBlogPosts
+  .filter((post) => post.data.isDraft !== true)
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+  );
+---
+
+<BaseLayout title="Kris Yotam">
+  <p>
+  I am a philomath, autodidact, and polymath with vast interests. This site distills my discoveries into refined,
+  long-form treatises for viewer consumption.
+  </p>
+  <div class="m-auto my-8 mb-12 max-w-2xl text-sm">
+    <div class="py-2 font-medium text-gray-500">
+      <span class="grid grid-cols-8">
+        <span class="col-span-1">Date</span>
+        <span class="col-span-7">Title</span>
+      </span>
+    </div>
+    <ul>
+      {
+        sortedPosts.map((post, index, posts) => {
+          const year = new Date(post.data.pubDate).getFullYear();
+          const prevPost = posts[index - 1];
+          const prevYear =
+            prevPost && new Date(prevPost.data.pubDate).getFullYear();
+          const showYear = year !== prevYear;
+
+          return (
+            <ArticleCard
+              title={post.data.title}
+              date={post.data.pubDate}
+              url={`${slug(post.data.title)}/`}
+              showYear={showYear}
+            />
+          );
+        })
+      }
+      <ArticleCard
+        title="Modernising an Enterprise Front End Stack"
+        url="https://medium.com/singtel-digital-technology/modernising-an-enterprise-front-end-stack-fe0571f259a1"
+        date={new Date('27 Nov 2018')}
+        showYear={true}
+      />
+    </ul>
+  </div>
+</BaseLayout>

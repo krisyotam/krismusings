@@ -1,4 +1,3 @@
----
 import BaseLayout from '../../../layouts/base.astro';
 import Markdown from '../../../components/Markdown.astro';
 import { getGitHubTilRepo } from '../../../_data/github_til_repo';
@@ -6,8 +5,9 @@ import { getGitHubTilRepo } from '../../../_data/github_til_repo';
 export const prerender = false;
 
 const til = await getGitHubTilRepo();
-const post = til[Math.floor(Math.random() * til.length)];
----
+
+// Ensure there are posts available and select a random one
+const post = til && til.length > 0 ? til[Math.floor(Math.random() * til.length)] : null;
 
 {
   post ? (

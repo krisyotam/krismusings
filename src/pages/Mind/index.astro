@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/base.astro';
+import mindItems from '../../_data/mind.json' assert { type: 'json' };
+
+function getRelativeTimeString(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  const timeIntervals = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "week", seconds: 604800 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "minute", seconds: 60 },
+    { label: "second", seconds: 1 },
+  ];
+
+  for (const interval of timeIntervals) {
+    const count = Math.floor(diffInSeconds / interval.seconds);
+    if (count >= 1) {
+      return `${count} ${interval.label}${count !== 1 ? "s" : ""} ago`;
+    }
+  }
+
+  return "just now";
+}
+
+export const prerender = true;
+---
+
+<BaseLayout>
+  <h1 class="mb-4 text-xl font-bold text-center">My Experimental Microblog</h1>
+  <p class="mb-4 text-lg text-center">A space for short-form notes, ideas, and snippets.</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+    {mindItems.items.map((item) => (
+      <div class="overflow-hidden border border-neutral-200 bg-white hover:bg-neutral-50 transition-colors duration-200 rounded-lg shadow-sm flex flex-col">
+        <div class="p-4 space-y-3 flex-grow">
+          <h3 class="text-sm font-semibold uppercase tracking-wide text-neutral-800">
+            {item.title}
+          </h3>
+          <p class="text-sm leading-relaxed text-neutral-600">
+            {item.content}
+          </p>
+          {item.image && (
+            <div class="relative h-[200px] w-full overflow-hidden rounded">
+              <img
+                src={item.image || "/placeholder.svg"}
+                alt={item.title}
+                class="object-cover w-full h-full"
+              />
+            </div>
+          )}
+        </div>
+        <div class="flex justify-between items-center p-4">
+          <p class="text-xs text-neutral-400">
+            {getRelativeTimeString(item.date)}
+          </p>
+          {item.link && (
+            <a
+              href={item.link}
+              class="text-xs text-neutral-600 bg-neutral-100 px-2 py-1 rounded transition-all duration-200 ease-in-out hover:bg-neutral-200 hover:text-neutral-800"
+            >
+              View Project
+            </a>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  /* Add any additional styles here if needed */
+</style>
+
+
+<style>
+  /* Add any additional styles here if needed */
+</style>
+
+
+<style>
+  /* Add any additional styles here if needed */
+</style>

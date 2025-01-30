@@ -1,0 +1,60 @@
+{
+    "items": [
+      {
+        "title": "SIMULATOR",
+        "content": "Revived my game engine project to simulate a world for some AI colony experiments.",
+        "image": "/images/uploads/deepseek.gif",
+        "date": "2023-11-15",
+        "link": "https://example.com/simulator"
+      },
+      {
+        "title": "MEMORY INSPECTOR",
+        "content": "A memory inspector for diagnosing the memory system of an AI agent modeled after a rudimentary brain. The points are mapped in space based on the relative relatedness based on the contents and properties of the memory.",
+        "image": "/placeholder.svg?height=300&width=400",
+        "date": "2023-10-20",
+        "link": "https://example.com/memory-inspector"
+      },
+      {
+        "title": "ON SOFTWARE DESIGN",
+        "content": "The goal of software should be to enhance our capabilities and make our lives easier, not to keep us perpetually engaged in a virtual world.",
+        "date": "2023-08-05"
+      },
+      {
+        "title": "RESEARCH APP WALKTHROUGH",
+        "content": "Quick walk-through of an early version of the research app for anyone looking for a new way to organize and read research papers.",
+        "date": "2023-07-10",
+        "link": "https://example.com/research-app"
+      },
+      {
+        "title": "RESEARCH",
+        "content": "Making something with the goal of helping me cut the time and effort it takes to understand research papers by half.",
+        "image": "/placeholder.svg?height=300&width=400",
+        "date": "2023-04-15"
+      },
+      {
+        "title": "ABSTRACT",
+        "content": "Finding the right level of abstraction is akin to finding the right tool for the job when it comes to navigating new ideas and concepts.",
+        "date": "2023-11-20"
+      },
+      {
+        "title": "STATS",
+        "content": "Finished a rewrite of my analytics server in rust and the whole thing runs on less than 10MB memory now.",
+        "date": "2023-10-25",
+        "link": "https://example.com/stats"
+      },
+      {
+        "title": "EXPLORING LEARNING & AI",
+        "content": "Had a blast building a mobile app for learning with AI. A tree of knowledge is generated for you by AI and expanded as your explore by continuously diving deeper—allowing you to go as deep as you want, in any way that makes sense to you.",
+        "date": "2023-08-10",
+        "link": "https://example.com/learning-ai"
+      },
+      {
+        "title": "F1 LIGHTBOX",
+        "content": "Made a display for a 1:43 scale model of an F1 RB16B. It uses a 64×32 RGB LED Matrix that goes through some track-like effects.",
+        "date": "2023-07-15",
+        "link": "https://example.com/f1-lightbox"
+      }
+    ]
+  }
+  
+  
